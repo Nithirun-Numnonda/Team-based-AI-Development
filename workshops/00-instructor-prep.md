@@ -1,0 +1,86 @@
+# 00 — เตรียมความพร้อมก่อนวันอบรม (ผู้สอน + TA)
+
+เอกสารนี้คือรายการที่ต้องทำให้เสร็จ **ก่อนวันอบรมอย่างน้อย 3 วัน** (ตัวหลักสูตรจัด 27–28 ต.ค. 2569)
+ทำตามลำดับ แล้วติ๊กในคอลัมน์ ☐ แนะนำให้ซ้อมใหญ่ (Dry Run) ตาม *คู่มือจับมือทำ: Multi-agent + Memory Hub* ที่มีอยู่แล้ว อย่างน้อย 1 รอบ
+
+## A. GitHub Organization
+
+| ☐ | งาน | รายละเอียด |
+|---|---|---|
+| ☐ | Organization `ubu-central-dev-2569` | เปิด 2FA บังคับสำหรับสมาชิก (Settings → Authentication security) |
+| ☐ | Team `maintainers` | ผู้สอน + ผู้ดูแลระบบของมหาวิทยาลัยที่ตัดสินใจ merge / อนุมัติ deploy |
+| ☐ | Team `participants` | ผู้เรียนทั้งหมด — สิทธิ์ **Write** ใน `dms-central` |
+| ☐ | Team ย่อย `team-1` … `team-5` | แต่ละทีมผูกกับโมดูล (ใช้ใน `CODEOWNERS`) |
+| ☐ | เชิญผู้เรียนจาก GitHub username ในแบบสำรวจ | ส่งคำเชิญล่วงหน้า 2–3 วัน และเตือนให้กด Accept |
+| ☐ | Actions permissions | อนุญาต Actions ของ GitHub (`actions/*`); Workflow permissions: **Read and write** ถ้า Bot ต้อง comment (หรือกำหนด `pull-requests: write` ใน workflow) |
+| ☐ | ตรวจแพ็กเกจที่ใช้ได้ | Rulesets, required reviewers ของ Environment, Secret scanning / Push protection / Code scanning **ใช้ได้เฉพาะกับ repo สาธารณะหรือแพ็กเกจที่รองรับ** — ตรวจก่อนสัญญากับผู้เรียน |
+
+## B. Repo ฝึกหัด Day 1
+
+| ☐ | งาน | รายละเอียด |
+|---|---|---|
+| ☐ | Template repo `dms-practice-template` | ใส่ Starter Project (Node.js 24 + PostgreSQL ใน Docker Compose) พร้อมสคริปต์ `lint`, `migrate`, `seed`, `test`, `dev` ใน `package.json` และตั้งเป็น Template repository |
+| ☐ | ไฟล์ที่ต้องมีใน Template | `CONTRIBUTORS.md` (หัวข้อว่าง ๆ), `team-info.md` (มีบรรทัด `เวลาประชุมทีม: 10:00` สำหรับ WS2.2), `.gitignore` (มี `.env`), `.env.example`, `README.md` |
+| ☐ | สร้าง `dms-practice-team1` … `team5` จาก Template | ให้ทีมละ repo: สมาชิกทีมสิทธิ์ Write, Module Lead สิทธิ์ Admin |
+| ☐ | Backlog ตัวอย่างสำหรับ WS3.3 | สร้าง Issue 12 ใบต่อ repo (รายการอยู่ใน WS3.3) ด้วยสคริปต์ `gh issue create` |
+| ☐ | ตรวจว่า `npm test` ผ่านใน Template | บนเครื่องสะอาดและใน CI (ดู WS4.1) |
+| ☐ | สคริปต์ Label + ไฟล์ Issue Template ตัวอย่าง | เตรียมไว้ให้ผู้เรียนคัดลอกจาก WS3.1 |
+
+## C. `dms-central` สำหรับ Day 2
+
+| ☐ | งาน | รายละเอียด |
+|---|---|---|
+| ☐ | ติดตั้ง **multi-agent-kit** ผ่าน PR | ตามคู่มือจับมือทำ บทที่ 2 (AGENTS.md, `.kilo/agents`, `.clinerules/workflows`, `docs/memory`, `docs/specs`, `docs/handoff`, CODEOWNERS, `ai-review.yml`, `scripts/ai-review.mjs`) |
+| ☐ | Ruleset ป้องกัน `main` | Require PR (1 approval) + Require Code Owners + Required check `test` + Block force push |
+| ☐ | Variables / Secret ของ AI Review bot | `LLM_BASE_URL`, `LLM_MODEL` (Variables) และ `LLM_API_KEY` (Secret ใช้ `gh secret set`) + label `ai-review` — ทดสอบด้วย PR ที่ผิดโดยตั้งใจ (บทที่ 3–4 ของคู่มือจับมือทำ) |
+| ☐ | Board `DMS Board` ของ `dms-central` | 5 คอลัมน์เหมือน Day 1 + Fields Module / Priority / Size |
+| ☐ | Backlog เริ่มต้นของ 5 โมดูล | โมดูลละ ≥ 3 การ์ดขนาดเล็ก (ทีมจะเติมเองใน WS4.4 อีก ≥ 5) ติด label `module: …` |
+| ☐ | Issue ซ้อม stats endpoint | การ์ดสำรองที่ทุกคนทำได้ถ้าการ์ดของทีมยังไม่พร้อม (ดูบทที่ 5 คู่มือจับมือทำ) |
+| ☐ | `CODEOWNERS` ใช้ Team จริง | `/src/modules/<module>/ @ubu-central-dev-2569/team-N`, `/docs/memory/` และ `/.github/` → `maintainers` |
+
+## D. สภาพแวดล้อมสำหรับ Deploy (WS8.2)
+
+ตัวอย่างนี้สมมติว่า Deploy ด้วย **SSH + Docker Compose** ปรับให้ตรงกับเซิร์ฟเวอร์จริงของมหาวิทยาลัย
+
+| ☐ | งาน | รายละเอียด |
+|---|---|---|
+| ☐ | เซิร์ฟเวอร์ (VM) พร้อม Docker | ติดตั้ง Docker + Compose, เปิดพอร์ตที่ใช้, ผู้ใช้ `deploy` ที่ไม่ใช่ root |
+| ☐ | โฟลเดอร์ `/opt/dms` | clone `dms-central` ไว้ (read-only deploy key) และมี `deploy.sh <tag>` |
+| ☐ | SSH key เฉพาะ deploy | สร้างคู่กุญแจใหม่ (`ssh-keygen -t ed25519`) ใส่ public key ที่เซิร์ฟเวอร์ — private key เก็บเป็น **Environment secret** `DEPLOY_SSH_KEY` |
+| ☐ | Environment `production` | Required reviewers = `maintainers`, ติ๊ก Prevent self-review, จำกัดให้ deploy เฉพาะ tag ที่ตรง `v*` |
+| ☐ | Variables | `DEPLOY_HOST`, `DEPLOY_USER` |
+| ☐ | Workflow `deploy.yml` + `scripts/deploy-ssh.sh` | ใน `main` ของ `dms-central` — ทดสอบด้วย tag ทดลอง (เช่น `v0.0.0-test`) ก่อนวันจริง |
+| ☐ | Tag baseline สำหรับ rollback | สร้าง tag เสถียร (เช่น `v0.0.0-baseline`) ใน `dms-central` และตรวจว่า deploy tag นี้ได้ |
+| ☐ | Endpoint ตรวจสุขภาพ | `/health` หรือ endpoint ที่มีอยู่ สำหรับ smoke test (ถ้า Starter ยังไม่มี ให้เพิ่มเป็นการ์ดเล็ก) |
+| ☐ | แผนสำรอง | ถ้าเซิร์ฟเวอร์ไม่พร้อม ใช้ `docker compose` บนเครื่องผู้สอนเป็นเป้าหมาย deploy จำลอง |
+
+## E. API Key และ AI
+
+| ☐ | งาน |
+|---|---|
+| ☐ | ได้ API Key ของมหาวิทยาลัยพอสำหรับผู้เรียน + TA + Bot (Key ของ Bot **แยกต่างหาก**) |
+| ☐ | ตัดสินใจ Model: ผู้เรียนใช้ตัวหนึ่ง Bot ใช้อีกตัว (มุมมองต่างกัน) |
+| ☐ | ตั้งงบ/rate limit ต่อ Key และเตรียมวิธี Revoke อย่างรวดเร็ว |
+| ☐ | ทดสอบ Key ด้วย `curl` ก่อนแจก (ดูคู่มือผู้สอนฉบับเดิม ภาคผนวก F-1) |
+| ☐ | เตรียมช่องทางแจก Key ที่ไม่แสดงบนจอฉาย (กระดาษ / ข้อความส่วนตัว) |
+
+## F. ผู้เรียน, TA และห้องอบรม
+
+| ☐ | งาน |
+|---|---|
+| ☐ | จัดทีม (5 ทีม) จากแบบสำรวจความคุ้นเคย — ทีมละ 4–6 คน ผสมทักษะ และกำหนดโมดูลของแต่ละทีม |
+| ☐ | ส่งคู่มือติดตั้งล่วงหน้า (VS Code, Git, Node.js 24 LTS, Docker Desktop, GitHub CLI, Cline, Kilo Code) |
+| ☐ | TA ทุกคนผ่านการซ้อม: บทที่ 6 (ซ้อมครบวงจร) + บทที่ 7 (ทดสอบรั้ว G1–G7) ของคู่มือจับมือทำ |
+| ☐ | ตรวจเครือข่ายห้อง: เข้าถึง GitHub, Docker Hub / ghcr.io, npm และ API ของ AI ได้ |
+| ☐ | ติดตั้งเครื่องมือล่วงหน้าบนเครื่องสำรอง 2–3 เครื่อง สำหรับผู้เรียนที่ติดตั้งไม่ผ่าน |
+| ☐ | USB / โฟลเดอร์แชร์ติดตั้งออฟไลน์: ตัวติดตั้ง VS Code, Git, Node.js, Docker Desktop, VSIX ของ Cline/Kilo |
+| ☐ | พิมพ์ Cheat-sheet คำสั่ง (ภาคผนวก ข ของคู่มือจับมือทำ) วางติดโต๊ะ |
+| ☐ | เตรียมใบประเมินและวุฒิบัตร |
+
+## G. วันก่อนอบรม (D-1)
+
+- ☐ เปิด `dms-central` แล้วตรวจ: `AGENTS.md` อยู่ชั้นบนสุด, Agent `designer` / `reviewer` ขึ้นใน Kilo, Workflow `/build.md` ขึ้นใน Cline
+- ☐ เปิด PR ทดสอบ 1 ใบ ให้ AI Review bot คอมเมนต์ได้ภายใน 2 นาที
+- ☐ ทดสอบ deploy ด้วย tag ทดลองจนครบวงจรและ rollback ได้
+- ☐ ตรวจให้ทุก Team ใน Org มีสมาชิกถูกต้อง และได้รับสิทธิ์ใน `dms-central`
+- ☐ สำรองสไลด์เป็น PDF และคัดลอก Workshop pack ไว้ในเครื่องผู้สอน (กัน Wi-Fi ล่ม)
