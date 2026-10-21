@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>บอร์ดประกาศหน่วยงาน</title>
+  <style>
+    :root { --bg: #f5f6f8; --card: #fff; --text: #1f2933; --muted: #6b7280; --accent: #b45309; --border: #e5e7eb; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, "Sarabun", sans-serif; background: var(--bg); color: var(--text); }
+    header { background: var(--accent); color: #fff; padding: 16px; }
+    header h1 { margin: 0; font-size: 1.4rem; }
+    header small { opacity: .85; }
+    main { max-width: 720px; margin: 0 auto; padding: 16px; }
+    form, .item { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+    input, textarea { width: 100%; padding: 8px; margin: 4px 0 10px; border: 1px solid var(--border); border-radius: 6px; font: inherit; }
+    button { background: var(--accent); color: #fff; border: 0; border-radius: 6px; padding: 8px 14px; font: inherit; cursor: pointer; }
+    button.link { background: none; color: var(--muted); padding: 0; text-decoration: underline; }
+    .item h2 { margin: 0 0 4px; font-size: 1.1rem; }
+    .meta { color: var(--muted); font-size: .85rem; display: flex; justify-content: space-between; }
+    #error { color: #b91c1c; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 id="title">บอร์ดประกาศหน่วยงาน</h1>
+    <small id="runtime">กำลังโหลด...</small>
+  </header>
+  <main>
+    <form id="form">
+      <label>หัวข้อ <input name="title" maxlength="120" required></label>
+      <label>รายละเอียด <textarea name="body" rows="3" maxlength="1000"></textarea></label>
+      <button type="submit">เพิ่มประกาศ</button>
+      <span id="error"></span>
+    </form>
+    <section id="list"></section>
+  </main>
+  <script>
+    const list = document.getElementById('list');
+    const form = document.getElementById('form');
+    const errorEl = document.getElementById('error');
+
+    function render(items) {
+      list.replaceChildren(...items.map((item) => {
+        const el = document.createElement('article');
+        el.className = 'item';
+        const h2 = document.createElement('h2');
+        h2.textContent = item.title;
+        const p = document.createElement('p');
+        p.textContent = item.body;
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        const time = document.createElement('span');
+        time.textContent = new Date(item.createdAt).toLocaleString('th-TH');
+        const del = document.createElement('button');
+        del.className = 'link';
+        del.textContent = 'ลบ';
+        del.onclick = async () => { await fetch(`/api/announcements/${item.id}`, { method: 'DELETE' }); load(); };
+        meta.append(time, del);
+        el.append(h2, p, meta);
+        return el;
+      }));
+    }
+
+    async function load() {
+      const res = await fetch('/api/announcements');
+      render(await res.json());
+    }
+
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      errorEl.textContent = '';
+      const data = Object.fromEntries(new FormData(form));
+      const res = await fetch('/api/announcements', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) { errorEl.textContent = (await res.json()).error; return; }
+      form.reset();
+      load();
+    };
+
+    fetch('/api/config').then((r) => r.json()).then((c) => {
+      document.getElementById('title').textContent = c.appTitle;
+      document.title = c.appTitle;
+      document.getElementById('runtime').textContent = `v${c.version} · รันบน ${c.runtime}`;
+    });
+    load();
+  </script>
+</body>
+</html>

@@ -95,4 +95,4 @@ git tag --list
 - ย้ำว่า **Tag** ตั้งชื่อแล้วย้อนกลับมาได้เสมอ — เป็นหลักการเดียวกับ rollback ใน WS8.2
 - ถ้า Ruleset ป้องกัน tag ไว้ ให้ผู้สอนตรวจสิทธิ์ของผู้สร้าง Release
 
-**ต่อไป →** [WS4.4 จัดทีมและเขียน Working Agreement](ws-4.4-team-setup.md)
+**ต่อไป →** [WS4.5 Deploy ด้วย Docker](ws-4.5-deploy-docker.md)

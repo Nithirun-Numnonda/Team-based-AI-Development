@@ -19,7 +19,8 @@
 
 | ☐ | งาน | รายละเอียด |
 |---|---|---|
-| ☐ | Template repo `dms-practice-template` | ใส่ Starter Project (Node.js 24 + PostgreSQL ใน Docker Compose) พร้อมสคริปต์ `lint`, `migrate`, `seed`, `test`, `dev` ใน `package.json` และตั้งเป็น Template repository |
+| ☐ | Template repo `dms-practice-template` | คัดลอกทุกไฟล์ใน [`practice-app/`](../practice-app/README.md) ไปไว้ที่ **ราก** ของ template (รวม `package-lock.json`, `.gitignore`, `.dockerignore` แต่ **ไม่รวม `.github/`** ซึ่งเป็นเฉลยของ WS4.1) — มีสคริปต์ `dev`, `lint`, `test`, `start` + `Dockerfile`, `docker-compose.yml`, `ecosystem.config.cjs` สำหรับ WS4.5–4.6 แล้วตั้งเป็น Template repository |
+| ☐ | ซ้อม Deploy บนเครื่องสะอาด | `docker compose up -d --build` → `:8080` และ `pm2 start ecosystem.config.cjs` → `:3000` ทั้งบน Windows และ macOS อย่างละ 1 เครื่อง |
 | ☐ | ไฟล์ที่ต้องมีใน Template | `CONTRIBUTORS.md` (หัวข้อว่าง ๆ), `team-info.md` (มีบรรทัด `เวลาประชุมทีม: 10:00` สำหรับ WS2.2), `.gitignore` (มี `.env`), `.env.example`, `README.md` |
 | ☐ | สร้าง `dms-practice-team1` … `team5` จาก Template | ให้ทีมละ repo: สมาชิกทีมสิทธิ์ Write, Module Lead สิทธิ์ Admin |
 | ☐ | Backlog ตัวอย่างสำหรับ WS3.3 | สร้าง Issue 12 ใบต่อ repo (รายการอยู่ใน WS3.3) ด้วยสคริปต์ `gh issue create` |

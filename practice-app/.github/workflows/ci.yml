@@ -1,0 +1,21 @@
+# CI ของ practice-app — รัน lint + test ทุก PR และทุกครั้งที่ push เข้า main
+# (ไฟล์นี้ทำงานเมื่ออยู่ที่ราก repo ของทีม: .github/workflows/ci.yml)
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test

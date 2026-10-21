@@ -14,8 +14,15 @@
 
 ## 📋 ต้องมีก่อนเริ่ม
 
-- Starter Project ใน repo ทีมที่รัน `npm test` ผ่านบนเครื่อง (ตรวจชื่อสคริปต์ใน `package.json`: `lint`, `migrate`, `test`)
-- ตรวจ `.env.example` เพื่อดูชื่อตัวแปรเชื่อมฐานข้อมูล (ในตัวอย่างใช้ `DATABASE_URL` — **ปรับให้ตรงกับของจริง**)
+- repo ทีมมี practice-app (บอร์ดประกาศ) ที่ราก และรันบนเครื่องผ่าน:
+
+  ```bash
+  npm ci
+  npm run lint      # ต้องเห็น "lint ผ่าน"
+  npm test          # ต้องเห็น pass 6 · fail 0
+  ```
+
+- practice-app **ไม่ใช้ฐานข้อมูล** (เก็บข้อมูลใน memory) CI จึงไม่ต้องเปิด PostgreSQL และไม่ต้องตั้งตัวแปรใด ๆ
 
 ## 👉 ขั้นตอน
 
@@ -40,42 +47,22 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: dms_test
-        ports: ["5432:5432"]
-        options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 10
-    env:
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/dms_test
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 20
           cache: npm
       - run: npm ci
       - run: npm run lint
-      - run: npm run migrate
       - run: npm test
 ```
 
-💡 **อธิบายสั้น ๆ:** `on` = เมื่อเปิด PR หรือ push เข้า main · `runs-on` = เครื่องใหม่สะอาดทุกครั้ง · `services` = เปิด PostgreSQL ให้ test · `steps` = รันตามลำดับ ขั้นไหนล้มก็หยุด
+💡 **อธิบายสั้น ๆ:** `on` = เมื่อเปิด PR หรือ push เข้า main · `runs-on` = เครื่องใหม่สะอาดทุกครั้ง · `steps` = รันตามลำดับ ขั้นไหนล้มก็หยุด · `node-version: 20` = ตรงกับ `node:20-alpine` ใน `Dockerfile` (สิ่งที่ CI ทดสอบ = สิ่งที่ deploy)
 
-🔧 **ปรับให้ตรงกับ Starter**
+💡 **ทำไมต้อง `npm ci` ไม่ใช่ `npm install`:** `npm ci` ติดตั้งตาม `package-lock.json` เป๊ะ ๆ — ถ้า lockfile ไม่ตรงกับ `package.json` จะล้มทันที ทำให้รู้ตัวก่อน deploy
 
-| ถ้า... | ให้... |
-|---|---|
-| ไม่มีสคริปต์ `lint` | ลบบรรทัด `npm run lint` หรือเพิ่มสคริปต์ที่ตรวจพื้นฐาน |
-| ชื่อตัวแปร DB ไม่ใช่ `DATABASE_URL` | แก้ `env:` ให้ตรงกับ `.env.example` |
-| Test ไม่ใช้ DB | ลบ `services:` ออก |
-| ต้อง seed ข้อมูลก่อน test | เพิ่ม `- run: npm run seed` ก่อน `npm test` |
+> ระบบจริงที่มีฐานข้อมูล (เช่น Day 2 ถ้าทีมเพิ่ม PostgreSQL) ให้เพิ่ม `services: postgres:` ใน job และตั้ง `env: DATABASE_URL` — วันนี้ยังไม่ต้องใช้
 
 > เวอร์ชันของ action (`@v4`) ใช้ major version ที่ GitHub แนะนำล่าสุดได้ — ตรวจหน้า Marketplace ของ `actions/checkout` และ `actions/setup-node`
 
@@ -96,9 +83,11 @@ gh pr create --base main --fill
 
 | ข้อความ | แปลว่า | แก้ |
 |---|---|---|
-| `Missing script: "lint"` | ไม่มีสคริปต์ | ดูตารางด้านบน |
-| `ECONNREFUSED 127.0.0.1:5432` | DB ยังไม่พร้อมหรือตัวแปรผิด | ตรวจ `health-cmd` และชื่อ `DATABASE_URL` |
-| `npm ci` ล้ม | `package-lock.json` ไม่ตรง | รัน `npm install` ในเครื่องแล้ว commit lockfile |
+| `Missing script: "lint"` | `package.json` ไม่ใช่ของ practice-app หรือถูกแก้ | ตรวจว่ามี `"lint": "node scripts/lint.js"` |
+| `npm ci` ล้ม / `lockfile ... not in sync` | `package-lock.json` ไม่มีหรือไม่ตรง | รัน `npm install` ในเครื่องแล้ว commit lockfile |
+| `lint ไม่ผ่าน` + ชื่อไฟล์ | syntax ผิดในไฟล์นั้น | เปิดไฟล์ตามบรรทัดที่แจ้ง แก้แล้ว push ใหม่ |
+| `✖ ... AssertionError` | test ล้ม | อ่านชื่อ test ที่ล้ม แล้วรัน `npm test` ในเครื่องให้ผ่านก่อน push |
+| workflow ไม่รันเลย | ไฟล์ไม่ได้อยู่ที่ `.github/workflows/` ของ **ราก repo** | ตรวจ path และนามสกุล `.yml` |
 
 Merge PR นี้เข้า `main` (ให้เพื่อน Approve)
 
@@ -112,7 +101,7 @@ Merge PR นี้เข้า `main` (ให้เพื่อน Approve)
 
 ### ขั้นที่ 4 — พิสูจน์ว่าบล็อกได้จริง
 
-1. สร้างกิ่ง `test/break-ci` แล้วแก้ test ให้ล้ม (เช่น เปลี่ยนค่าที่คาดหวังเป็นค่าผิด)
+1. สร้างกิ่ง `test/break-ci` แล้วแก้ test ให้ล้ม — เปิด `test/app.test.js` ใน test แรก (`GET /api/health`) เปลี่ยน `assert.equal(data.status, 'ok')` เป็น `assert.equal(data.status, 'okay')`
 2. commit → push → เปิด PR
 3. รอ CI แดง ✗ → ดูปุ่ม Merge
 
@@ -133,9 +122,10 @@ Merge PR นี้เข้า `main` (ให้เพื่อน Approve)
 
 ## 🧑‍🏫 หมายเหตุสำหรับผู้สอน/TA
 
-- เตรียม `ci.yml` ที่ **ทดสอบกับ Starter จริงแล้ว** ผู้เรียนปรับแค่ชื่อสคริปต์/ตัวแปร ลดเวลาแก้ปัญหา
+- เฉลย `ci.yml` อยู่ที่ [`practice-app/.github/workflows/ci.yml`](../../practice-app/.github/workflows/ci.yml) — **อย่าคัดลอกโฟลเดอร์ `.github/` เข้า Template repo** เพื่อให้ผู้เรียนสร้างเองในงานนี้ (ทีมที่ติดนานเกิน 5 นาที ให้คัดลอกเฉลยไปวาง)
 - ถ้า Org จำกัด Actions ให้ใช้ได้เฉพาะ action ที่อนุมัติ ตรวจก่อนว่า `actions/checkout` และ `actions/setup-node` อยู่ในรายการ
 - ความจริงเรื่องแพ็กเกจ: Required status checks ใน Ruleset ของ repo private ต้องใช้แพ็กเกจที่รองรับ
-- รหัสผ่าน `postgres` ใน workflow ใช้เฉพาะ CI ที่ทิ้งได้ — ย้ำว่า **ห้ามใช้ค่าจริง**
+- CI ใช้เวลาราว 20–30 วินาที (ไม่มี DB) จึงเหลือเวลาให้ขั้นที่ 4 ได้ทุกทีม
+- เชื่อมไป Day 2: UBU BioLink มี CI แยก 2 job (`CI / api` รัน test, `CI / web` รัน `next build`) — หลักการเดียวกัน ตั้ง Required ทั้งสองชื่อ
 
 **ต่อไป →** [WS4.2 Dependabot และ Security scanning](ws-4.2-dependabot-security.md)
