@@ -139,4 +139,4 @@ npm ci --omit=dev
 pm2 start ecosystem.config.cjs
 ```
 
-ขั้นตอนเต็มอยู่ใน Workshop [WS4.5 Deploy ด้วย Docker](../workshops/day1/ws-4.5-deploy-docker.md) และ [WS4.6 Deploy ด้วย PM2](../workshops/day1/ws-4.6-deploy-pm2.md)
+ขั้นตอนเต็ม (ตรวจ Tag → deploy → smoke test → rollback) อยู่ใน [`.clinerules/workflows/deploy.md`](.clinerules/workflows/deploy.md) — ใน Cline สั่ง `/deploy.md` ได้เลย
