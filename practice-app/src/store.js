@@ -44,6 +44,16 @@ export function createStore({ dataFile = '' } = {}) {
       save();
       return item;
     },
+    // แก้ไขฟิลด์ใดก็ได้ของประกาศ (ยกเว้น id และ createdAt) — ฟีเจอร์ต่าง ๆ ใช้เพิ่มฟิลด์ของตัวเอง
+    // เช่น { pinned: true } หรือ { category: 'ด่วน' } คืนค่า undefined ถ้าไม่พบ
+    update(id, patch) {
+      const item = items.find((it) => it.id === id);
+      if (!item) return undefined;
+      const { id: _id, createdAt: _createdAt, ...rest } = patch;
+      Object.assign(item, rest, { updatedAt: new Date().toISOString() });
+      save();
+      return item;
+    },
     remove(id) {
       const before = items.length;
       items = items.filter((item) => item.id !== id);

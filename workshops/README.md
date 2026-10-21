@@ -53,9 +53,11 @@
 | S2 (10:45–12:00) | WS2.1 | GitHub Flow รอบแรก: PR + Review | 25′ | หน้า 27–28 | [ws-2.1-pr-review.md](day1/ws-2.1-pr-review.md) |
 | | WS2.2 | จำลอง Merge Conflict และแก้ร่วมกัน | 20′ | หน้า 31 | [ws-2.2-merge-conflict.md](day1/ws-2.2-merge-conflict.md) |
 | | WS2.3 | ตั้ง Ruleset, CODEOWNERS และกันความลับ | 20′ | หน้า 35 | [ws-2.3-repo-rules-secrets.md](day1/ws-2.3-repo-rules-secrets.md) |
-| S3 (13:00–14:30) | WS3.1 | Issue Template และ Label ของทีม | 25′ | หน้า 46 | [ws-3.1-issue-templates-labels.md](day1/ws-3.1-issue-templates-labels.md) |
-| | WS3.2 | สร้าง Kanban Board ของทีม | 20′ | หน้า 47 | [ws-3.2-kanban-board.md](day1/ws-3.2-kanban-board.md) |
-| | WS3.3 | Sprint Planning จำลอง | 30′ | หน้า 48 | [ws-3.3-sprint-planning.md](day1/ws-3.3-sprint-planning.md) |
+| S3 (13:00–14:30) | WS3.1 | Issue Template และ Label ของทีม | 15′ | หน้า 46 | [ws-3.1-issue-templates-labels.md](day1/ws-3.1-issue-templates-labels.md) |
+| | WS3.2 | สร้าง Kanban Board ของทีม | 15′ | หน้า 47 | [ws-3.2-kanban-board.md](day1/ws-3.2-kanban-board.md) |
+| | WS3.3 | Sprint: 8 ฟีเจอร์ = 8 Feature Branch (ทำด้วย AI) | 45′ | หน้า 48 | [ws-3.3-sprint-planning.md](day1/ws-3.3-sprint-planning.md) |
+
+> ฟีเจอร์ A–H ของ practice-app: ภาพรวม การเตรียม และแผนซ้อมของทีมผู้สอนอยู่ที่ [day1/features-backlog.md](day1/features-backlog.md) · การ์ด [day1/feature-cards/](day1/feature-cards/) · เฉลย TA [day1/solutions/](day1/solutions/README.md)
 | S4 (14:45–16:00) | WS4.1 | สร้าง CI และตั้ง Required Check | 20′ | หน้า 59 | [ws-4.1-ci-required-check.md](day1/ws-4.1-ci-required-check.md) |
 | | WS4.2 | Dependabot และ Security scanning | 10′ | หน้า 60 | [ws-4.2-dependabot-security.md](day1/ws-4.2-dependabot-security.md) |
 | | WS4.3 | Release v0.0.1 | 15′ | หน้า 61 | [ws-4.3-release-v0.0.1.md](day1/ws-4.3-release-v0.0.1.md) |
@@ -90,7 +92,7 @@
 |---|---|---|---|
 | S1 | 25′ (เปิดหลักสูตร 10′ + Git 15′) | 55′ (WS1.1 25′ + WS1.2 30′) | 10′ |
 | S2 | 15′ | 65′ (25′ + 20′ + 20′) → ลดสาธิต WS2.3 เหลือ 15′ ได้ | — |
-| S3 | 20′ | 75′ (25′ + 20′ + 30′) | 5′ |
+| S3 | 15′ | 75′ (WS3.1 15′ + WS3.2 15′ + WS3.3 45′) | — (Template/Label/Board เตรียมไว้ก่อน ผู้เรียนแค่ตรวจและปรับ) |
 | S4 | 10′ | 95′ (WS4.1 20′ + WS4.2 สาธิต 5′ + WS4.3 15′ + WS4.5 20′ + WS4.6 20′ + WS4.4 15′) | — (ตามกำหนดการ SAGE 14:45–16:30 = 105′) |
 | S5 | 30′ (ReAct 15′ + Multi-agent/Memory hub 15′) | 60′ (15′ + 10′ + 15′ + 20′) | — (ให้ TA pre-pull Docker image ตอนลงทะเบียน) |
 | S6 | 10′ | 75′ (25′ + 10′ + 40′) | — |

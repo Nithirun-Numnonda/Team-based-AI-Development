@@ -19,11 +19,12 @@
 
 | ☐ | งาน | รายละเอียด |
 |---|---|---|
-| ☐ | Template repo `dms-practice-template` | คัดลอกทุกไฟล์ใน [`practice-app/`](../practice-app/README.md) ไปไว้ที่ **ราก** ของ template (รวม `package-lock.json`, `.gitignore`, `.dockerignore` แต่ **ไม่รวม `.github/`** ซึ่งเป็นเฉลยของ WS4.1) — มีสคริปต์ `dev`, `lint`, `test`, `start` + `Dockerfile`, `docker-compose.yml`, `ecosystem.config.cjs` สำหรับ WS4.5–4.6 แล้วตั้งเป็น Template repository |
+| ☐ | Template repo `dms-practice-template` | คัดลอกทุกไฟล์ใน [`practice-app/`](../practice-app/README.md) ไปไว้ที่ **ราก** ของ template (รวม `package-lock.json`, `.gitignore`, `.dockerignore`, `AGENTS.md`, `docs/`, `.clinerules/` แต่ **ไม่รวม `.github/`** ซึ่งเป็นเฉลยของ WS4.1) — มีสคริปต์ `dev`, `lint`, `test`, `start` + `Dockerfile`, `docker-compose.yml`, `ecosystem.config.cjs` สำหรับ WS4.5–4.6 แล้วตั้งเป็น Template repository |
 | ☐ | ซ้อม Deploy บนเครื่องสะอาด | `docker compose up -d --build` → `:8080` และ `pm2 start ecosystem.config.cjs` → `:3000` ทั้งบน Windows และ macOS อย่างละ 1 เครื่อง |
 | ☐ | ไฟล์ที่ต้องมีใน Template | `CONTRIBUTORS.md` (หัวข้อว่าง ๆ), `team-info.md` (มีบรรทัด `เวลาประชุมทีม: 10:00` สำหรับ WS2.2), `.gitignore` (มี `.env`), `.env.example`, `README.md` |
 | ☐ | สร้าง `dms-practice-team1` … `team5` จาก Template | ให้ทีมละ repo: สมาชิกทีมสิทธิ์ Write, Module Lead สิทธิ์ Admin |
-| ☐ | Backlog ตัวอย่างสำหรับ WS3.3 | สร้าง Issue 12 ใบต่อ repo (รายการอยู่ใน WS3.3) ด้วยสคริปต์ `gh issue create` |
+| ☐ | การ์ดฟีเจอร์ 8 ใบ (A–H) สำหรับ WS3.3 | `bash workshops/scripts/seed-day1-features.sh <ORG>/<REPO>` ทุก repo ทีม — สร้าง Label + Issue จาก [day1/feature-cards/](day1/feature-cards/) |
+| ☐ | ซ้อมฟีเจอร์ Day 1 ทั้งทีม (Dry Run 90′) | ตามแผนใน [day1/features-backlog.md](day1/features-backlog.md) หัวข้อ 6 — เฉลยสำหรับ TA อยู่ใน [day1/solutions/](day1/solutions/README.md) (ห้ามใส่ใน Template) |
 | ☐ | ตรวจว่า `npm test` ผ่านใน Template | บนเครื่องสะอาดและใน CI (ดู WS4.1) |
 | ☐ | สคริปต์ Label + ไฟล์ Issue Template ตัวอย่าง | เตรียมไว้ให้ผู้เรียนคัดลอกจาก WS3.1 |
 

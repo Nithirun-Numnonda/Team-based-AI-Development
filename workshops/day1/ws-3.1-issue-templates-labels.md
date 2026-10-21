@@ -58,7 +58,7 @@ body:
     id: module
     attributes:
       label: โมดูล
-      options: [upload, search, versions, workflow, users]
+      options: [edit, search, pin, category, stats, ack, export, theme]
     validations:
       required: true
 ```
@@ -96,7 +96,7 @@ body:
     id: module
     attributes:
       label: โมดูล
-      options: [upload, search, versions, workflow, users]
+      options: [edit, search, pin, category, stats, ack, export, theme]
 ```
 
 **`.github/ISSUE_TEMPLATE/task.yml`**
@@ -142,7 +142,7 @@ gh label create "type: task"      -R $R --color 0E8A16 --description "งาน�
 gh label create "priority: high"   -R $R --color B60205 --description "ทำก่อน" --force
 gh label create "priority: medium" -R $R --color FBCA04 --description "ปกติ" --force
 gh label create "priority: low"    -R $R --color C2E0C6 --description "ทำทีหลัง" --force
-for m in upload search versions workflow users; do
+for m in edit search pin category stats ack export theme; do
   gh label create "module: $m" -R $R --color BFD4F2 --description "โมดูล $m" --force
 done
 gh label create "good first issue" -R $R --color 7057FF --description "เหมาะกับคนเริ่มต้น" --force
@@ -160,7 +160,7 @@ gh label create "type: task" -R $R --color 0E8A16 --description "งานย่
 gh label create "priority: high" -R $R --color B60205 --description "ทำก่อน" --force
 gh label create "priority: medium" -R $R --color FBCA04 --description "ปกติ" --force
 gh label create "priority: low" -R $R --color C2E0C6 --description "ทำทีหลัง" --force
-foreach ($m in "upload","search","versions","workflow","users") {
+foreach ($m in "edit","search","pin","category","stats","ack","export","theme") {
   gh label create "module: $m" -R $R --color BFD4F2 --description "โมดูล $m" --force
 }
 gh label create "good first issue" -R $R --color 7057FF --description "เหมาะกับคนเริ่มต้น" --force

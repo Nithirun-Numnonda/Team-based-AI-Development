@@ -19,7 +19,7 @@
   ```bash
   npm ci
   npm run lint      # ต้องเห็น "lint ผ่าน"
-  npm test          # ต้องเห็น pass 6 · fail 0
+  npm test          # ต้องเห็น fail 0 (จำนวน pass เพิ่มขึ้นตามฟีเจอร์ที่ merge แล้ว)
   ```
 
 - practice-app **ไม่ใช้ฐานข้อมูล** (เก็บข้อมูลใน memory) CI จึงไม่ต้องเปิด PostgreSQL และไม่ต้องตั้งตัวแปรใด ๆ

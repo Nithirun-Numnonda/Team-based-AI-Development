@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
-const dirs = ['src', 'test', 'scripts'];
+const dirs = ['src', 'src/features', 'public', 'public/features', 'test', 'scripts'];
 let failed = 0;
 
 for (const dir of dirs) {
