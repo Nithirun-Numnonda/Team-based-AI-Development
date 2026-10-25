@@ -1,0 +1,18 @@
+name: Task
+description: งานย่อยที่ต้องทำ (เอกสาร ตั้งค่า งานเทคนิค)
+title: "[Task]: "
+labels: ["type: task"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: ต้องทำอะไร
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: เสร็จเมื่อ
+      value: "- [ ] "
+    validations:
+      required: true

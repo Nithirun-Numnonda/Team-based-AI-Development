@@ -1,0 +1,31 @@
+name: Feature
+description: ฟีเจอร์ใหม่ของโมดูล
+title: "[Feature]: "
+labels: ["type: feature"]
+body:
+  - type: textarea
+    id: story
+    attributes:
+      label: User story
+      description: ในฐานะ ... ฉันต้องการ ... เพื่อ ...
+    validations:
+      required: true
+  - type: textarea
+    id: ac
+    attributes:
+      label: Acceptance Criteria
+      description: เขียนให้ตรวจได้ว่า "ผ่าน" หรือ "ไม่ผ่าน"
+      value: "- [ ] "
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: ขอบเขต (ทำ / ไม่ทำ)
+  - type: dropdown
+    id: module
+    attributes:
+      label: โมดูล
+      options: [edit, search, pin, category, stats, ack, export, theme]
+    validations:
+      required: true
