@@ -1,0 +1,29 @@
+name: Bug
+description: แจ้งปัญหาที่พบ
+title: "[Bug]: "
+labels: ["type: bug"]
+body:
+  - type: textarea
+    id: steps
+    attributes:
+      label: ขั้นตอนทำซ้ำ
+      value: "1. \n2. \n3. "
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: ผลที่เห็น
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: ผลที่คาดหวัง
+    validations:
+      required: true
+  - type: dropdown
+    id: module
+    attributes:
+      label: โมดูล
+      options: [edit, search, pin, category, stats, ack, export, theme]
